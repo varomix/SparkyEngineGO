@@ -17,6 +17,8 @@ func CreateWindow(width, height int, title string) *glfw.Window {
 		panic(err)
 	}
 
+	win.SetSizeCallback(windowResize)
+
 	return win
 }
 
@@ -29,4 +31,12 @@ func Clear() {
 func Update(window *glfw.Window) {
 	window.SwapBuffers()
 	glfw.PollEvents()
+}
+
+func windowResize(win *glfw.Window, width, height int) {
+	// get the window size
+	x, y := win.GetSize()
+	// resize the gl Viewport when resizing the window
+	gl.Viewport(0, 0, int32(x), int32(y))
+
 }
