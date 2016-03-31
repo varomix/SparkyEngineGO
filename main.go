@@ -1,8 +1,11 @@
 package main
 
 import (
-	"SparkyEngineGO/gfx"
+	"fmt"
 	"runtime"
+
+	"SparkyEngineGO/gfx"
+	"SparkyEngineGO/input"
 
 	"github.com/go-gl/gl/v2.1/gl"
 	"github.com/go-gl/glfw/v3.1/glfw"
@@ -21,6 +24,11 @@ func main() {
 
 	// creates glfw window and inits OpenGL
 	window := gfx.CreateWindow(960, 540, "Sparky")
+
+	// Hook mouse and key events
+	window.SetMouseButtonCallback(onMouseBtn)
+	window.SetKeyCallback(input.OnKey)
+	window.SetCloseCallback(onClose)
 
 	gl.ClearColor(0.2, 0.3, 0.8, 1.0)
 	gl.ClearDepth(1)
@@ -45,5 +53,35 @@ func main() {
 
 		gfx.Update(window)
 	}
+}
 
+func onKey(window *glfw.Window, k glfw.Key, s int, action glfw.Action, mods glfw.ModifierKey) {
+	if action != glfw.Press {
+		return
+	}
+	switch glfw.Key(k) {
+	case glfw.KeyEscape:
+		window.SetShouldClose(true)
+	case glfw.KeySpace:
+		fmt.Println("You pressed space")
+	default:
+		return
+	}
+}
+
+func onMouseBtn(window *glfw.Window, b glfw.MouseButton, action glfw.Action, mods glfw.ModifierKey) {
+	if action != glfw.Press {
+		return
+	}
+	switch glfw.MouseButton(b) {
+	case glfw.MouseButtonLeft:
+		fmt.Println("You pressed the left mouse button")
+	default:
+		return
+
+	}
+}
+
+func onClose(window *glfw.Window) {
+	window.SetShouldClose(true)
 }
